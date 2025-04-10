@@ -30,12 +30,20 @@ test('@Web Browser Context-Validating Error Login',async ({browser})=>
 
 
 
-/*
-test.only ('Page Playwright test',async ({page})=>
+
+test.only ('UI Controls',async ({page})=>
 {
 
-await page.goto("https://google.com");
-console.log(await page.title());
-await expect(page).toHaveTitle("Google");
+await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+const dropdown = page.locator('select.form-control');
+await dropdown.selectOption('consult');
+await page.locator('.radiotextsty').last().click();
+await page.locator('#okayBtn').click();
+await expect(page.locator('.radiotextsty').last()).toBeChecked();
+console.log(await page.locator('.radiotextsty').last().isChecked());
+await page.locator('#terms').click();
+await expect (page.locator('#terms')).toBeChecked();
+await page.locator('#terms').uncheck();
+expect (await page.locator('#terms').isChecked()).toBeFalsy();
+await page.pause();
 });
-*/
