@@ -31,7 +31,7 @@ test('@Web Browser Context-Validating Error Login',async ({browser})=>
 
 
 
-test.only ('UI Controls',async ({page})=>
+test ('UI Controls',async ({page})=>
 {
 
 await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
@@ -48,4 +48,28 @@ await page.locator('#terms').uncheck();
 expect (await page.locator('#terms').isChecked()).toBeFalsy();
 await expect(documentLink).toHaveAttribute('class','blinkingText');
 await page.pause();
+});
+
+test.only('Child Window Handling',async({browser}) =>
+{   const context = await browser.newContext();
+    const page = await context.newPage();
+    const userName = page.locator("#username")
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    const documentLink = page.locator('[href*=documents-request]');
+
+    const [newPage] = await Promise.all([
+
+    context.waitForEvent('page'),
+    documentLink.click(),
+    ])
+    const text = await newPage.locator(".red").textContent();
+    const arrayText = text.split('@')
+    const domain = arrayText[1].split(' ')
+    console.log(domain[0]);
+    await userName.fill(domain[0]);
+    await page.pause();
+    console.log(await page.locator("#username").inputValue());
+
+
+
 });
